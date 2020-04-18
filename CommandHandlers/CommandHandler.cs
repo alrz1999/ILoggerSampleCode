@@ -1,13 +1,15 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using ILoggerSampleCode.Models;
+using ILoggerSampleCode.UserController;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ILoggerSampleCode
+namespace ILoggerSampleCode.CommandHandlers
 {
-    class CommandHandler
+    public class CommandHandler
     {
         public ILogger Logger { get; set; }
         public UserRepository UserRepository { get; set; }

@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using ILoggerSampleCode.CommandHandlers;
+using ILoggerSampleCode.UserController;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
 using Microsoft.Extensions.Logging.Debug;
 using System;
@@ -12,7 +14,7 @@ namespace ILoggerSampleCode
             var command = "";
             var userRepository = new UserRepository();
             var logger = GetLogger();
-            var commandHandler = new CommandHandler(logger,userRepository);
+            var commandHandler = new CommandHandler(logger, userRepository);
             var commandId = 1;
             while (command != "close")
             {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ILoggerSampleCode
+namespace ILoggerSampleCode.Models
 {
-    class User
+    public class User
     {
         private static int IdCounter { get; set; } = 0;
         public int Id { get; set; }

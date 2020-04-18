@@ -1,12 +1,13 @@
-﻿using System;
+﻿using ILoggerSampleCode.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ILoggerSampleCode
+namespace ILoggerSampleCode.UserController
 {
-    class UserRepository
+    public class UserRepository
     {
         private Dictionary<int, User> RegisteredUsers { get; set; } = new Dictionary<int, User>();
 
