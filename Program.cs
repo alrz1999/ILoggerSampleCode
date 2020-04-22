@@ -49,22 +49,9 @@ namespace ILoggerSampleCode
                                         builder
                                         .AddConsole(option => option.IncludeScopes=true)
                                         .AddDebug()
-                                        .AddFilter<DebugLoggerProvider>("CommandHandler", LogLevel.Trace)
-                                        
+                                        .AddFilter<DebugLoggerProvider>("CommandHandler", LogLevel.Trace)                                  
                                         );
             return loggerFactory.CreateLogger("CommandHandler");
         }
-
-        private static ILogger GetLogger2()
-        {
-            var loggerFactory = LoggerFactory.Create(builder =>
-                                        builder
-                                        .AddConsole(option => option.IncludeScopes = true)
-                                        .AddEventLog()
-                                        .AddFilter<DebugLoggerProvider>("CommandHandler", LogLevel.Trace)
-                                        ) ;
-            return loggerFactory.CreateLogger("CommandHandler");
-        }
-
     }
 }
