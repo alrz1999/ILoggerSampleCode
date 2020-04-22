@@ -1,0 +1,2 @@
+2020-04-22 14:39:24.585 +04:30 [Information] [JobId : ] a command received { SourceContext: "CommandHandler", ClassName: "Program", MethodName: "Main", CommandId: "1", Scope: ["Program-Main-1"] } 
+2020-04-22 14:39:25.888 +04:30 [Information] [JobId : ] a user siged up { SourceContext: "CommandHandler", ClassName: "CommandHandler", MethodName: "SignUp", CommandId: "1", Scope: ["Program-Main-1", "CommandHandler-Handle", "CommandHandler-SignUp"] } 

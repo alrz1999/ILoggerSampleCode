@@ -3,9 +3,11 @@ using ILoggerSampleCode.UserController;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
 using Microsoft.Extensions.Logging.Debug;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace ILoggerSampleCode
 {
@@ -45,11 +47,18 @@ namespace ILoggerSampleCode
 
         private static ILogger GetLogger()
         {
+            //Log.Logger = new LoggerConfiguration()
+            //        .MinimumLevel.Debug()
+            //        .WriteTo.Console(outputTemplate:"{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] [JobId : {JobId}] {Message} {Properties} {NewLine}{Exception}")
+            //        .WriteTo.File("C:\\Users\\Asus\\source\\repos\\ILoggerSampleCode\\Logs\\log.txt",
+            //        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] [JobId : {JobId}] {Message} {Properties} {NewLine}{Exception}")
+            //        .CreateLogger();
             var loggerFactory = LoggerFactory.Create(builder =>
                                         builder
-                                        .AddConsole(option => option.IncludeScopes=true)
+                                        .AddConsole(option => option.IncludeScopes = true)
                                         .AddDebug()
-                                        .AddFilter<DebugLoggerProvider>("CommandHandler", LogLevel.Trace)                                  
+                                        .AddFilter<DebugLoggerProvider>("CommandHandler", LogLevel.Trace)
+                                        //.AddSerilog()
                                         );
             return loggerFactory.CreateLogger("CommandHandler");
         }
