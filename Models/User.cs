@@ -10,16 +10,16 @@ namespace ILoggerSampleCode.Models
     {
         private static int IdCounter { get; set; } = 0;
         public int Id { get; set; }
-        public string Name { get; set; }
-        public int Age { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
         public long Money { get; set; }
-        public bool IsSignedIn { get; set; } = false;
+        public long? Key { get; set; }
 
-        public User(string name, int age)
+        public User(string name, string password)
         {
             Id = SetUserId();
-            Name = name;
-            Age = age;
+            Username = name;
+            Password = password;
             Money = 1000;
         }
 

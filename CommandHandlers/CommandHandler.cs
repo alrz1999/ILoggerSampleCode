@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ILoggerSampleCode.CommandHandlers
@@ -48,49 +49,63 @@ namespace ILoggerSampleCode.CommandHandlers
         {
             using (Logger.BeginScope("{ClassName}-{MethodName}", nameof(CommandHandler), nameof(SignOut)))
             {
-                var id = GetUserId();
-                if (UserRepository.IsRegistered(id))
+                var username = GetUsername();
+                var key = GetKey();
+                if (UserRepository.IsRegistered(username))
                 {
-                    var user = UserRepository.GetUser(id);
-                    if (user.IsSignedIn)
-                    {
-                        user.IsSignedIn = false;
-                        Logger.LogInformation("user signed out");
-                    }
-                    else
-                    {
-                        Logger.LogWarning("a user was signed out but asked to sign out again");
-                    }
+                    var user = UserRepository.GetUser(username, key);
+                    user.Key = null;
+                    Logger.LogInformation("user signed out");
                 }
                 else
                 {
-                    Logger.LogWarning("not found user with {Id} to sign out", id);
+                    Logger.LogWarning("not found user with {Username} to sign out", username);
                 }
             }
+        }
+
+        private double GetKey()
+        {
+            double key;
+            Thread.Sleep(10);
+            Console.WriteLine("enter your key");
+            try
+            {
+                key = long.Parse(Console.ReadLine());
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return key;
         }
 
         private void Sell()
         {
             using (Logger.BeginScope("{ClassName}-{MethodName}", nameof(CommandHandler), nameof(Sell)))
             {
-                var id = GetUserId();
-                if (UserRepository.IsRegistered(id))
+                var username = GetUsername();
+                var key = GetKey();
+                if (UserRepository.IsRegistered(username))
                 {
-                    var user = UserRepository.GetUser(id);
-                    if (user.IsSignedIn)
+                    User user;
+                    try
                     {
-                        user.Money += 100;
-                        Logger.LogInformation("a sell operation was done");
-                        Logger.LogTrace("user with id {Id} sold something for 100$", user.Id);
+                        user = UserRepository.GetUser(username, key);
                     }
-                    else
+                    catch (Exception)
                     {
                         Logger.LogWarning("a user tried to sell but wasn't signed in");
+                        throw;
                     }
+                    user.Money += 100;
+                    Logger.LogInformation("a sell operation was done");
+                    Logger.LogTrace("user with id {Id} sold something for 100$", user.Id);
                 }
                 else
                 {
-                    Logger.LogWarning("not found user with specified id to sell");
+                    Logger.LogWarning("not found user with specified id to sell {CommandId}");
                 }
             }
         }
@@ -99,25 +114,11 @@ namespace ILoggerSampleCode.CommandHandlers
         {
             using (Logger.BeginScope("{ClassName}-{MethodName}", nameof(CommandHandler), nameof(SignIn)))
             {
-                var id = GetUserId();
-                if (UserRepository.IsRegistered(id))
-                {
-                    var user = UserRepository.GetUser(id);
-                    if (user.IsSignedIn)
-                    {
-                        Logger.LogWarning("a user was signed in but try to sign in again");
-                    }
-                    else
-                    {
-                        user.IsSignedIn = true;
-                        Logger.LogInformation("a user signed in");
-                        Logger.LogTrace("user with {Id}", user.Id);
-                    }
-                }
-                else
-                {
-                    Logger.LogWarning("not found user with specific id to sign in");
-                }
+                var username = GetUsername();
+                var password = GetPassword();
+                var user = UserRepository.GetUser(username, password);
+                user.Key = new Random().Next();
+                Console.WriteLine($"use this key for command {user.Key}");
             }
         }
 
@@ -125,22 +126,41 @@ namespace ILoggerSampleCode.CommandHandlers
         {
             using (Logger.BeginScope("{ClassName}-{MethodName}", nameof(CommandHandler), nameof(SignUp)))
             {
-                Console.WriteLine("enter your name");
-                var name = Console.ReadLine();
-                Console.WriteLine("enter your age");
-                var age = int.Parse(Console.ReadLine());
-                var user = new User(name, age);
+                string username = GetUsername();
+                if (UserRepository.IsRegistered(username))
+                {
+                    throw new Exception();
+                }
+                string password = GetPassword();
+                var user = new User(username, password);
                 UserRepository.RegisterUser(user);
-                Console.WriteLine($"your id : {user.Id}");
+                Thread.Sleep(10);
                 Logger.LogInformation("a user siged up");
-                Logger.LogTrace("a user with id {Id} signed up",user.Id);
+                Logger.LogTrace("a user with id {Id} signed up", user.Id);
             }
+        }
+
+        private string GetPassword()
+        {
+            Thread.Sleep(10);
+            Console.WriteLine("enter your password");
+            var password = Console.ReadLine();
+            return password;
+        }
+
+        private string GetUsername()
+        {
+            Thread.Sleep(10);
+            Console.WriteLine("enter your username");
+            var username = Console.ReadLine();
+            return username;
         }
 
         private int GetUserId()
         {
             using (Logger.BeginScope("{ClassName}-{MethodName}", nameof(CommandHandler), nameof(GetUserId)))
             {
+                Thread.Sleep(10);
                 Console.WriteLine("Enter your id");
                 int id;
                 try

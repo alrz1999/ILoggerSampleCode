@@ -9,10 +9,47 @@ namespace ILoggerSampleCode.UserController
 {
     public class UserRepository
     {
-        private Dictionary<int, User> RegisteredUsers { get; set; } = new Dictionary<int, User>();
+        private Dictionary<string, User> RegisteredUsers { get; set; } = new Dictionary<string, User>();
 
-        public bool IsRegistered(int id) => RegisteredUsers.ContainsKey(id);
-        public void RegisterUser(User user) => RegisteredUsers.Add(user.Id, user);
-        public User GetUser(int id) => RegisteredUsers[id];
+        public bool IsRegistered(string username) => RegisteredUsers.ContainsKey(username);
+        public void RegisterUser(User user) => RegisteredUsers.Add(user.Username, user);
+        public User GetUser(string username, string password)
+        {
+            if (IsRegistered(username))
+            {
+                var user = RegisteredUsers[username];
+                if (user.Password == password)
+                {
+                    return user;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            else
+            {
+                throw new Exception();
+            }
+        }
+        public User GetUser(string username, double key)
+        {
+            if (IsRegistered(username))
+            {
+                var user = RegisteredUsers[username];
+                if (user.Key == key)
+                {
+                    return user;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            else
+            {
+                throw new Exception();
+            }
+        }
     }
 }
