@@ -73,9 +73,9 @@ namespace ILoggerSampleCode.CommandHandlers
             {
                 key = long.Parse(Console.ReadLine());
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
+                Logger.LogError(e,"invalid key");
                 throw;
             }
             return key;
@@ -129,6 +129,7 @@ namespace ILoggerSampleCode.CommandHandlers
                 string username = GetUsername();
                 if (UserRepository.IsRegistered(username))
                 {
+                    Logger.LogError("username was used before");
                     throw new Exception();
                 }
                 string password = GetPassword();
